@@ -1,0 +1,20 @@
+{
+    "name": "wjing/framework",
+    "description": "my first framework",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Wang, Jing",
+            "email": "wjing.ca@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/http-foundation": "^4.2",
+        "symfony/routing": "^4.2",
+        "doctrine/annotations": "^1.6",
+        "symfony/config": "^4.2",
+        "symfony/dependency-injection": "^4.2",
+        "symfony/expression-language": "^4.2",
+        "symfony/yaml": "^4.2"
+    }
+}
