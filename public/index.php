@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+require_once '../vendor/autoload.php';
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
@@ -9,7 +11,14 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 
-require_once '../vendor/autoload.php';
+function render_template(Request $request)
+{
+    extract($request->attributes->all(), EXTR_SKIP);
+    ob_start();
+    include sprintf('../src/pages/%s.php', $_route);
+
+    return new Response(ob_get_clean());
+}
 
 $request = Request::createFromGlobals();
 $routes = include '../src/app.php';
@@ -19,23 +28,16 @@ $context->fromRequest($request);
 $matcher = new UrlMatcher($routes, $context);
 
 try {
-    extract($matcher->match($request->getPathInfo()), EXTR_SKIP);
-    ob_start();
-    include sprintf('../src/pages/%s.php', $_route);
-
-    $response = new Response(ob_get_clean());
+    $request->attributes->add($matcher->match($request->getPathInfo()));
+    $response = call_user_func($request->attributes->get('_controller'), $request);
 } catch (ResourceNotFoundException $rne) {
-    $response = new Response('Not Found',404);
+    $response = new Response('Not Found', 404);
 } catch (Exception $e) {
     $response = new Response('An error occurred', 500);
 }
 
-//$generator = new UrlGenerator($routes, $context);
-//echo $generator->generate(
-//    'hello',
-//    array('name' => 'Fabien'),
-//    UrlGeneratorInterface::ABSOLUTE_URL);
 $response->send();
+
 
 
 

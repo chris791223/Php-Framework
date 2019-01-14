@@ -15,6 +15,7 @@
         "symfony/config": "^4.2",
         "symfony/dependency-injection": "^4.2",
         "symfony/expression-language": "^4.2",
-        "symfony/yaml": "^4.2"
+        "symfony/yaml": "^4.2",
+        "symfony/http-kernel": "^4.2"
     }
 }
