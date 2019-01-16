@@ -8,6 +8,11 @@
             "email": "wjing.ca@gmail.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
     "require": {
         "symfony/http-foundation": "^4.2",
         "symfony/routing": "^4.2",
