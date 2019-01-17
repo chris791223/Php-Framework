@@ -1,11 +1,9 @@
 <?php
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+declare(strict_types = 1);
+
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-
-
 
 $routes = new RouteCollection();
 
@@ -19,7 +17,7 @@ $routes->add('bye', new Route('/bye', array(
 
 $routes->add('leap_year', new Route('/is_leap_year/{year}', array(
     'year' =>null,
-    '_controller' =>  "LeapYearController::indexAction"
+    '_controller' =>  "Calendar\\Controller\\LeapYearController::indexAction"
 )));
 
 return $routes;
