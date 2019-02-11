@@ -9,8 +9,10 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
+use Symfony\Component\HttpKernel;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
+use Test\Unit\Simplex\FrameWorkTest;
 
 $request = Request::createFromGlobals();
 $routes = include '../src/app.php';
@@ -21,7 +23,7 @@ $matcher = new UrlMatcher($routes, $context);
 $controllerResolver = new ControllerResolver();
 $argumentResolver = new ArgumentResolver();
 
-$dispatcher= new EventDispatcher();
+$dispatcher = new EventDispatcher();
 
 /**
  * using listener
@@ -39,6 +41,11 @@ $dispatcher->addSubscriber($googleSubscriber);
 $dispatcher->addSubscriber($contentLengthSubscriber);
 
 $framework = new Simplex\Framework($dispatcher, $matcher, $controllerResolver, $argumentResolver);
+$framework = new HttpKernel\HttpCache\HttpCache(
+    $framework,
+    new HttpKernel\HttpCache\Store('../cache')
+);
+
 $response = $framework->handle($request);
 
 $response->send();
